@@ -1,0 +1,10 @@
+function callWG() {
+
+    // Create a <script> tag and set the WundergroundURL as the source.
+    var script = document.createElement('script');
+    // Live Wunderground hurricane info stored in:
+    // http://api.wunderground.com/api/9fdb05d1f6dbcf42/currenthurricane/view.json
+    script.src = 'https://api.wunderground.com/api/9fdb05d1f6dbcf42/currenthurricane/view.json';
+    document.getElementsByTagName('head')[0].appendChild(script);
+         
+};

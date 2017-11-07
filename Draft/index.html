@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create Map</title>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <style rel="stylesheet" type="text/css">
+
+            body {
+
+            position:relative;
+
+            }
+
+            #footer {
+            
+                padding-top:5px;
+
+            }
+
+      </style>
+
+    </head>
+
+    <body onload="createMap();">
+
+        <nav class="navbar navbar-light bg-faded">
+            <a class="navbar-brand" href="#">
+            <img src="" width="30" height="30" class="d-inline-block align-top" alt="">
+            Bing Map Test
+            </a>
+        </nav>
+
+        <br>
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-9">
+        
+                    <div id='myMap' style='width: 80vw; height: 80vh;'></div><br>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="container">
+
+            <form method="post" id="pinDetails">
+
+                <div class="form-group row">
+
+                    <label class="col-2 col-form-label" for="location"><strong>Location</strong></label>
+
+                    <div class="col-7">
+
+                        <input type="text" class="form-control" placeholder="Eg. 405 East 42nd Street, New York, NY" name="location" id="location">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <label class="col-2 col-form-label" for="description"><strong>Description</strong></label>
+
+                        <div class="col-5">
+
+                            <input type="text" class="form-control" placeholder="Eg. United Nations Secretariat Building" name="description" id="description">
+
+                        </div>
+
+                    <div class="form-check col-2">
+            
+                        <label class="form-check-label">
+            
+                        <input type="checkbox" class="form-check-input" id="desCheck" checked>
+
+                            <p>Show description</p>
+
+                        </label>
+        
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="pinColor" id="purplePin" value="purple"> Purple
+                    </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="pinColor" id="redPin" value="red"> Red
+                    </label>
+                    </div>
+                    
+                    <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="pinColor" id="bluePin" value="blue"> Blue
+                    </label>
+                    </div>
+                    
+                    <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="pinColor" id="yellowPin" value="yellow"> Yellow
+                    </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="pinColor" id="greenPin" value="green"> Green
+                    </label>
+                    </div>
+
+                </div>
+
+                <button type="button" class="btn btn-primary" id="submit">Submit</button>
+            </form>
+        
+        </div>
+
+        <br />
+        <div class="container">
+            <div id="errorPanel" class="alert" role="alert" hidden="hidden"></div>
+        </div>
+
+        <br />
+        <nav class="navbar navbar-light bg-faded">
+            <p class="nav justify-content-end" id="footer">Done by Timothy Lai</p>  
+            <p class="nav justify-content-end">Alpha test v1.1</p>     
+        </nav>
+
+        <script  type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol?callback=GetMap" async defer></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+        <script type='text/javascript'>
+
+            var apiKey = "AhdEfpJK4Wel9wv4lvnCkOefqGJBHqTfdUERjBErv1pVHdA9s8ff4gXWexxoQkM2";
+            
+            //sample pushpin info
+            var pushPinInfo = [];
+
+            function createMap() {
+                
+                //generating empty map
+                var mapOptions = {
+                    credentials: apiKey,
+                    mapTypeId: Microsoft.Maps.MapTypeId.road,
+                    center: new Microsoft.Maps.Location(1.2822359, 103.8523618),
+                    zoom: 15 
+                };
+
+                map = new Microsoft.Maps.Map(document.getElementById("myMap"), mapOptions);
+                Microsoft.Maps.Events.addHandler(map, "click", addPinLayer);
+
+            };
+
+            function addPinLayer() {
+                //creating layers
+                var pinLayer = new Microsoft.Maps.EntityCollection();
+
+                //generating pushpins and placing them in pin layer
+                for (var i = 0; i < pushPinInfo.length; i++) {
+                    var coordinates = new Microsoft.Maps.Location(pushPinInfo[i][0], pushPinInfo[i][1]);
+                    var pin = new Microsoft.Maps.Pushpin(coordinates, {title:pushPinInfo[i][3], color:pushPinInfo[i][4],'draggable': true});
+                    pinLayer.push(pin);
+                };
+
+                //producing map
+                map.entities.push(pinLayer);
+            }
+
+            $(function () {
+                
+                $("#submit").click(function () {
+        
+                    //check user has entered something first
+                    if ($("#location").val().length > 0) {
+                        //send location query to bing maps REST api
+
+                        var query = $("#location").val();
+                        $.getJSON('http://dev.virtualearth.net/REST/v1/Locations?query=' + encodeURIComponent(query) + "&key=" + apiKey +"&jsonp=?", function (result) {
+                            if (result.resourceSets[0].estimatedTotal > 0) {
+                                
+                                if ($("#description").val().length != 0) {
+                                    var loc = result.resourceSets[0].resources[0].point.coordinates;
+                                    
+                                    if ($("#desCheck").prop("checked")) {
+                                        var des = $("#description").val();
+                                    } else {
+                                        var des = "";
+                                    }
+                                    
+                                    var col = $('input[name=pinColor]:checked', "#pinDetails").val();
+                                    var addPin = [loc[0], loc[1], des, des, col];
+                                    pushPinInfo.push(addPin)
+                                    addPinLayer();
+
+                                } else {
+                                    $("#errorPanel").removeAttr("hidden").addClass("alert-danger").removeClass("alert-success").html("<strong>Please enter a description.</strong>");
+                                }
+                            }
+                            else {
+                                $("#errorPanel").removeAttr("hidden").addClass("alert-danger").removeClass("alert-success").html("<strong>Sorry that address cannot be found.</strong>");
+                            }
+                        });
+                    }
+                    else {
+                        $("#errorPanel").removeAttr("hidden").addClass("alert-danger").removeClass("alert-success").html("<strong>Please enter an address</strong>");
+                    }
+
+                });
+            });
+
+            
+  
+        </script>
+    </body>
+</html>

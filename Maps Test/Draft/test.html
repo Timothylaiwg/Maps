@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bing Maps REST with Jquery</title>
+        
+        
+        
+    </head>
+    <body>
+        <label for="myaddress">Type an address:</label>
+        <input type="text" id="location" />
+        <input type="button" id="btnSearch" value="Find Location" />
+        <p id="results"></p>
+
+        <script type='text/javascript' src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js"></script>
+        <script>
+            $(function () {
+
+                var apiKey = "AhdEfpJK4Wel9wv4lvnCkOefqGJBHqTfdUERjBErv1pVHdA9s8ff4gXWexxoQkM2";
+    $("#btnSearch").click(function () {
+        //check user has entered something first
+        if ($("#location").val().length > 0) {
+            //send location query to bing maps REST api
+
+             var query = $("#location").val();
+            $.getJSON('http://dev.virtualearth.net/REST/v1/Locations?query=' + encodeURIComponent(query) + "&key=" + apiKey +"&jsonp=?", function (result) {
+                if (result.resourceSets[0].estimatedTotal > 0) {
+                    var loc = result.resourceSets[0].resources[0].point.coordinates;
+                    $("#results").html('latitude:' + loc[0] + ', longitude:' + loc[1]);
+                }
+                else {
+                    $("#results").html("sorry that address cannot be found");
+                }
+            });
+        }
+        else {
+            $("#results").html("please enter an address");
+        }
+    });
+});
+
+
+            function updateTable() {
+                
+                for (var j = 0; j < pushPinInfo.length; j++) {
+                            
+                    $('#table > tbody:last-child').append("<td>"j + 1"</td><tr>"pushPinInfo[j][3]"</tr><tr>"pushPinInfo[j][0]"</tr><tr>"pushPinInfo[j][1]"</tr>");
+
+                };
+            };
+<br />
+        <div class="container">
+            <div id="outputPanel">
+                <h3>Pins added</h3>
+                <table class="table table-inverse" id="table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Lat</th>
+                            <th>Lng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+pushPinInfo[0] = [1.2822359, 103.8523618, "One Marina Boulevard", "One Marina Boulevard", "purple"];
+            pushPinInfo[1] = [1.2822488, 103.8483141, "Telok Ayer MRT", "Telok Ayer MRT", "red"];
+        </script>
+        
+    </body>
+</html>
+
+<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+
+var pushPinInfoArray = pushPinInfo.sort();
+                    var duplicatePin = [];
+                    for (var i = 0; i < pushPinInfoArray.length - 1; i++) {
+                        if (pushPinInfoArray[i + 1] == pushPinInfoArray[i]) {
+
+                            pinLayer.push(pushPinInfoArray[pin]);
+                        }
+
+                    }
+
+
+                    for (var i = 0; i < pushPinInfo.length; i++) {
+                                        if (loc[0] != $.each(pushPinInfo[i][0]) && loc[1] != $.each(pushPinInfo[i][1])) {
+
+                                            
+
+                                        }
+
+                                    };
+
+
+
+            var buttonId = e.target.id;
+                    console.log(buttonId.toString());
+                    var index = buttonId[buttonId.length - 1];
+                    console.log(index);
+                    removePinFromMap(addPinLayer, index);
+
+                    + (pushPinInfo.length - 1) + '"
+
+
+
+
+
+                    //var addPin = [locTemp.latitude, locTemp.longitude, description, des, col];
+                    //pushPinInfo.push(addPin);
+
+                    var pin = new Microsoft.Maps.Pushpin(coordinates, {'draggable': true});
+
+                    map.entities.push(pin);
+                    alert("Done");
+
+
+
+                    var locTemp = point.target.tryPixelToLocation(pt);
+                    var coordinates = new Microsoft.Maps.Location(locTemp.latitude, locTemp.longitude);

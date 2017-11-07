@@ -1,0 +1,24 @@
+Alpha v1.1
+1) Loaded Bing map api
+2) Implemented basic html with form
+3) Loaded Bootstrap v4
+4) Implemented click function for form submission
+5) Implemented error reporting function
+6) Implemented pin layer
+
+Alpha v1.2
+1) Changed load page function to include Bing map with async load
+2) Implemented table log function
+3) Implemented delete pin function
+4) Deleted map click handler function for pins
+
+Alpha v1.3
+1) Implemented click function on map to pop modal for pin
+2) Debugged table delete pin function
+3) Implemented focus function
+
+Alpha v1.4
+1) Created events array
+2) Pull in data from USGS
+3) USGS data fitted into events array for plot
+4) ABle to activate

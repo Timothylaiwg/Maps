@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Bing Map Test</title>
+      <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+      <style rel="stylesheet" type="text/css">
+
+        body {
+
+          position:relative;
+
+        }
+
+      </style>
+
+    </head>
+    <body>
+      <nav class="navbar navbar-light bg-faded">
+        <a class="navbar-brand" href="#">
+        <img src="/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+          Bing Map Test
+        </a>
+      </nav>
+
+      <br>
+
+      <div id='printoutPanel'></div>
+
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-9">
+
+            <div id="title" hidden="hidden"></div>
+            
+            <div id='myMap' style='width: 65vw; height: 65vh;'></div>
+
+          </div>
+
+          <div class="col-3">
+
+            Hi
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <br>
+
+      <div class="container">
+
+        <form method="post">
+
+          <div class="form-group row">
+
+            <label class="col-2 col-form-label" for="location"><strong>Location</strong></label>
+
+            <div class="col-7">
+
+              <input type="text" class="form-control" placeholder="Eg. 405 East 42nd Street, New York, NY" name="location" id="location">
+
+            </div>
+
+          </div>
+
+          <div class="form-group row">
+
+            <label class="col-2 col-form-label" for="description"><strong>Description</strong></label>
+
+            <div class="col-5">
+
+              <input type="text" class="form-control" placeholder="Eg. United Nations Secretariat Building" name="description" id="description">
+
+            </div>
+
+            <div class="form-check col-2">
+    
+              <label class="form-check-label">
+      
+                <input type="checkbox" class="form-check-input">
+
+                Show description
+
+              </label>
+  
+            </div>
+
+          </div>
+
+          <div class="form-group">
+
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="purplePin" id="purplePin" value="purple"> Purple
+              </label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="redPin" id="redPin" value="red"> Red
+              </label>
+            </div>
+            
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="bluePin" id="bluePin" value="blue"> Blue
+              </label>
+            </div>
+            
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="yellowPin" id="yellowPin" value="yellow"> Yellow
+              </label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="greenPin" id="greenPin" value="green"> Green
+              </label>
+            </div>
+
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="postLocation">Submit</button>
+
+        </form>
+
+      </div>
+
+      <script type='text/javascript'>
+        function loadMapScenario() {
+
+            var apiKey = "AhdEfpJK4Wel9wv4lvnCkOefqGJBHqTfdUERjBErv1pVHdA9s8ff4gXWexxoQkM2";
+
+            var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+                credentials: apiKey
+            });
+                
+            var pushpin = new Microsoft.Maps.Pushpin(map.getCenter(), null);
+            map.entities.push(pushpin);
+                
+        }
+                
+            
+      </script>
+      <script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?callback=loadMapScenario' async defer></script>
+      <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    </body>
+</html>

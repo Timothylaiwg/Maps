@@ -1,0 +1,12 @@
+earthquakes = [];
+
+function callUSGS() {
+
+    // Create a <script> tag and set the USGS URL as the source.
+    var script = document.createElement('script');
+    // Live USGS GeoJSON 4.5+ magnitude one day summary stored at
+    // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojsonp
+    script.src = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojsonp';
+    document.getElementsByTagName('head')[0].appendChild(script);
+         
+};

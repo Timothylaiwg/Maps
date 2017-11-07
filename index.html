@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create Map</title>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <style rel="stylesheet" type="text/css">
+
+            body {
+
+                position:relative;
+
+            }
+
+            #footer {
+            
+                padding-top:5px;
+
+            }
+
+            #mapContainer {
+
+                margin-top:5px;
+            }
+
+            #wundergroundLogo {
+
+                width:20px;
+                height:20px;
+                margin-left:5px;
+            }
+
+      </style>
+
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-light bg-faded">
+            <a class="navbar-brand" href="#">
+            <img src="" width="30" height="30" class="d-inline-block align-top" alt="">
+            Bing Map Test
+            </a>
+        </nav>
+
+        <div class="container" id="mapContainer">
+
+            <div class="row">
+
+                <div class="col-12">
+        
+                    <div id='myMap' style='width: 86vw; height: 88vh;'></div><br>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="container">
+            <div id="errorPanel" class="alert" role="alert" hidden="hidden"></div>
+        </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="clickPinModal" tabindex="-1" role="dialog" aria-labelledby="clickPinModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="clickPinModalLabel">New Location</h5>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <form method="post" id="clickPinDetails">
+
+                            <div class="form-group row">
+
+                                <label class="col-3 col-form-label" for="clickPinDescription"><strong>Description</strong></label>
+
+                                    <div class="col-9">
+
+                                        <input type="text" class="form-control" placeholder="Eg. United Nations Secretariat Building" name="clickPinDescription" id="clickPinDescription">
+
+                                    </div>
+                            </div>
+                            
+                            <div class="form-group row">
+
+                                <div class="form-check col-5">
+                        
+                                    <label class="form-check-label">
+                        
+                                    <input type="checkbox" class="form-check-input" id="clickPinDesCheck" checked>
+
+                                        <p>Show description</p>
+
+                                    </label>
+                    
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="clickPinColor" value="purple"> Purple
+                                    </label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="clickPinColor" value="red"> Red
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="clickPinColor" value="blue"> Blue
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="clickPinColor" value="yellow"> Yellow
+                                    </label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="clickPinColor" value="green"> Green
+                                    </label>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                        <div class="container">
+                            <div id="clickErrorPanel" class="alert" role="alert" hidden="hidden"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeButton">Close</button>
+                        <button type="button" class="btn btn-primary" id="clickSubmit">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="container">
+
+            <form method="post" id="pinDetails">
+
+                <div class="form-group row">
+
+                    <label class="col-2 col-form-label" for="location"><strong>Location</strong></label>
+
+                    <div class="col-7">
+
+                        <input type="text" class="form-control" placeholder="Eg. 405 East 42nd Street, New York, NY" name="location" id="location">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <label class="col-2 col-form-label" for="description"><strong>Description</strong></label>
+
+                        <div class="col-5">
+
+                            <input type="text" class="form-control" placeholder="Eg. United Nations Secretariat Building" name="description" id="description">
+
+                        </div>
+
+                    <div class="form-check col-2">
+            
+                        <label class="form-check-label">
+            
+                        <input type="checkbox" class="form-check-input" id="desCheck" checked>
+
+                            <p>Show description</p>
+
+                        </label>
+        
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="pinColor" id="purplePin" value="purple"> Purple
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="pinColor" id="redPin" value="red"> Red
+                        </label>
+                    </div>
+                    
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="pinColor" id="bluePin" value="blue"> Blue
+                        </label>
+                    </div>
+                    
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="pinColor" id="yellowPin" value="yellow"> Yellow
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="pinColor" id="greenPin" value="green"> Green
+                        </label>
+                    </div>
+
+                </div>
+
+                <button type="button" class="btn btn-primary" id="submitPrimaryForm">Submit</button>
+            </form>
+        
+        </div>
+
+        <br />
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <div id="outputPanel" hidden="hidden">
+                        <h5>Pins added</h5>
+                        <table class="table table-inverse" id="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Description</th>
+                                    <th>Lat</th>
+                                    <th>Lng</th>
+                                    <th>Delete pin</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="eventPinPanel" class="col-6">
+                    <h5>Latest events</h5>
+                    <table class="table table-inverse" id="latestEventPin">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Lat</th>
+                                <th>Lng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="modal fade" id="sigeventAlertModal" tabindex="-1" role="dialog" aria-labelledby="sigeventAlertModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><strong>Alert</strong></h5>
+                </div>
+                <div class="modal-body">
+                    <p id="sigeventAlert"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+            </div>
+            </div>
+
+        <br />
+        <nav class="navbar navbar-light bg-faded">
+            <p class="nav justify-content-end" id="footer">Created by Timothy Lai</p>  
+            <p class="nav justify-content-end">Alpha test v1.4</p>
+            <p class="nav justify-content-end">Powered by Weather Underground.com<img id="wundergroundLogo" src="img/wundergroundLogo.png" alt="Weather Underground Logo"></p> 
+        </nav>
+
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol?callback=GetMap" async defer></script>
+        <script src="earthquake.html" type="text/javascript"></script>
+        <script src="hurricane.html" type="text/javascript"></script>
+
+        <script type='text/javascript'>
+
+            $(document).ready(function() {
+                
+                //apiKey info
+                var apiKey = "AhdEfpJK4Wel9wv4lvnCkOefqGJBHqTfdUERjBErv1pVHdA9s8ff4gXWexxoQkM2";
+
+                //array that stores pushpin info
+                var pushPinInfo = [];
+                var location = [];
+                var eventPin = [[1.3521, 103.8198, "Suicide Bombing", "President killed.", "img/alert.png"],
+                    [51.5074, -0.1278, "Political Turmoil", "Queen dissolves parliament and declares constitution void", "img/alert.png"]];
+                var personalLoc;
+                
+                //delay calling map
+                var timeoutID = window.setTimeout(createMap, 1500);
+                timeoutID = window.setTimeout(eventPinLoad, 2000);
+                timeoutID = window.setTimeout(getUserLocation, 2000);
+                
+
+                //get current time
+                var time = new Date().getTime();
+
+                //create map
+                function createMap() {
+                    //generating map options
+                    var mapOptions = {
+                        credentials: apiKey,
+                        mapTypeId: Microsoft.Maps.MapTypeId.road,
+                        zoom: 9
+                        
+                    };
+
+                    //print map
+                    map = new Microsoft.Maps.Map("#myMap", mapOptions);
+                    Microsoft.Maps.Events.addHandler(map, "click", clickedPoint);
+                    recordPersonalLocation();
+                    
+                };
+
+                function eventPinTable() {
+                    
+                }
+
+                //add entered primary form data to pinLayer
+                function addPinLayer(array) {
+
+                    //creating layers
+                    var pinLayer = new Microsoft.Maps.Layer();
+
+                    //generating pushpins and placing them in pin layer
+                    var coordinates = new Microsoft.Maps.Location(array[array.length - 1][0], 
+                        array[array.length - 1][1]);
+                    var pin = new Microsoft.Maps.Pushpin(coordinates, 
+                        {title:array[array.length - 1][3], 
+                        color:array[array.length - 1][4],
+                        'draggable': true});                   
+                    pinLayer.add(pin);
+                                        
+                    //placing pin on map
+                    addPinToMap(pinLayer, coordinates);
+
+                };
+
+                //add event pin with infobox
+                function eventPinLoad() {
+                    
+                    var pinLayer = new Microsoft.Maps.Layer();
+                  
+                    for (var i = 0; i < eventPin.length; i++) {
+
+                        //generating pushpins and placing them in pin layer
+                        var coordinates = new Microsoft.Maps.Location(eventPin[i][0], 
+                            eventPin[i][1]);
+                        var pin = new Microsoft.Maps.Pushpin(coordinates, 
+                            {'draggable': false, icon: eventPin[i][4]});
+
+                        //Create an infobox at the center of the map but don't show it.
+                        infobox = new Microsoft.Maps.Infobox(pin.getLocation(), {
+                            visible: false
+                        });
+
+                        //Assign the infobox to a map instance.
+                        infobox.setMap(map);
+
+                        //Store some metadata with the pushpin.
+                        pin.metadata = {
+                            title: eventPin[i][2],
+                            description: eventPin[i][3]
+                            
+                        };
+
+                        pinLayer.add(pin);
+                        
+                    }
+
+                    addPinToMap(pinLayer, coordinates);
+                    Microsoft.Maps.Events.addHandler(pinLayer, 'click', displayInfobox);
+                    
+                };
+
+                function displayInfobox(e) {
+                    //Make sure the infobox has metadata to display.
+                    if (e.target.metadata) {
+                        //Set the infobox options with the metadata of the pushpin.
+                        infobox.setOptions({
+                            location: e.target.getLocation(),
+                            title: e.target.metadata.title,
+                            description: e.target.metadata.description,
+                            visible: true
+                        });
+
+                    }
+                }
+
+                //function to add pin to map and zoom to coordinates
+                function addPinToMap(pinLayer, coordinates) {
+
+                    map.layers.insert(pinLayer);
+                    bestView(coordinates);
+
+                };
+                
+                function bestView(coordinates) {
+
+                    var maxLat = -90;
+                    var minLat = 90;
+                    var maxLong = -180;
+                    var minLong = 180;
+                    var centerLat = 0;
+                    var centerLong = 0;
+
+                    for (var i = 0; i < pushPinInfo.length; i++) {
+                        if (maxLat < pushPinInfo[i][0]) {
+                            maxLat = pushPinInfo[i][0]
+                        }
+
+                        if (minLat > pushPinInfo[i][0]) {
+                            minLat = pushPinInfo[i][0]
+                        }
+
+                        if (maxLong < pushPinInfo[i][1]) {
+                            maxLong = pushPinInfo[i][1]
+                        }
+
+                        if (minLong > pushPinInfo[i][1]) {
+                            minLong = pushPinInfo[i][1]
+                        }
+
+                    };
+
+                    centerLat = (maxLat + minLat) / 2;
+                    centerLong = (maxLong + minLong) / 2;
+                    var centerPoint = new Microsoft.Maps.Location(centerLat, centerLong);
+
+                    var sw = new Microsoft.Maps.Location(minLat, minLong);
+                    var ne = new Microsoft.Maps.Location(maxLat, maxLong);
+                    var rectangle = new Microsoft.Maps.LocationRect.fromCorners(sw, ne);
+
+                    if (pushPinInfo.length == 1) {
+
+                        map.setView({center: coordinates});
+                    
+                    } else {
+
+                        map.setView({bounds:rectangle});
+
+                    }
+
+                };
+                
+                function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+                    var R = 6371; // Radius of the earth in km
+                    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+                    var dLon = deg2rad(lon2-lon1); 
+                    var a = 
+                        Math.sin(dLat/2) * Math.sin(dLat/2) +
+                        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                        Math.sin(dLon/2) * Math.sin(dLon/2)
+                        ; 
+                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                    var d = R * c; // Distance in km
+                    return d;
+                };
+
+                function deg2rad(deg) {
+                    return deg * (Math.PI/180)
+                };
+                
+
+                //add clicked pins
+                function clickedPoint(point) {
+
+                    //check if map is clicked
+                    if (point.targetType == "map") {
+                        
+                        //create stored point location
+                        location = [point.location.latitude, point.location.longitude];
+
+                        //add attributes to map
+                        $("#myMap").attr({"data-toggle": "modal", "data-target":"#clickPinModal"})
+                        
+                    };
+
+                };
+
+                //delegated click function for map click modal submit button
+                function clickPinDetailsFunction() {
+
+                    //get coordinates
+                    var loc = location;
+                                    
+                    //description of the venue
+                    var description = $("#clickPinDescription").val();
+                    var des;
+
+                    //check if checkboxed is checked
+                    if ($("#clickPinDesCheck").prop("checked")) {
+                        des = description;
+                    } else {
+                        des = "";
+                    };
+                                    
+                    //if pin color is checked in form
+                    var col = $('input[name=clickPinColor]:checked', "#clickPinDetails").val();
+                                
+                    //form array of pin details and add to pushPinInfo array
+                    var addPin = [loc[0], loc[1], description, des, col];
+                    pushPinInfo.push(addPin);
+
+                    //take new pin info and publish pin layer and table
+                    addPinLayer(pushPinInfo);               
+                    updateTable();
+                                    
+                };
+
+                //update table info
+                function updateTable() {
+
+                    //remove table hidden attribute
+                    $("#outputPanel").removeAttr("hidden");
+
+                    //delete table contents for refresh of table
+                    //easier to reload information from array
+                    $(".tableItem").empty();
+
+                    //add row for latest pin added
+                    for (var j = 0; j < pushPinInfo.length; j++) {        
+                        $("#table tbody:last-child").append(
+                            "<tr class='tableItem'>" + 
+                            "<th>" + (j + 1) + "</th>" +
+                            "<th>" + pushPinInfo[j][2] + "</th>" +
+                            "<th>" + pushPinInfo[j][0].toFixed(5) + "</th>" +
+                            "<th>" + pushPinInfo[j][1].toFixed(5) + "</th>" +
+                            "<th>" + '<button type="button" class="btn btn-info btn-sm deletePin" id="delButton' + (j) + '">Delete Pin</button>' + "</th>" +
+                            "</tr>");                  
+                    }
+
+                };
+
+                //remove pin handler
+                function removePinFromMap(index) {
+
+                    map.layers.removeAt(parseInt(index));
+                    
+                };
+
+                //remove modal attributes from map
+                function removeClickModal() {
+
+                    $("#myMap").removeAttr("data-toggle data-target");
+                }
+
+                function timeSince(date) {
+
+                    var seconds = Math.floor((new Date() - date) / 1000);
+
+                    var interval = Math.floor(seconds / 31536000);
+
+                    if (interval > 1) {
+                        return interval + " years";
+                    }
+                    interval = Math.floor(seconds / 2592000);
+                    if (interval > 1) {
+                        return interval + " months";
+                    }
+                    interval = Math.floor(seconds / 86400);
+                    if (interval > 1) {
+                        return interval + " days";
+                    }
+                    interval = Math.floor(seconds / 3600);
+                    if (interval > 1) {
+                        return interval + " hours";
+                    }
+                    interval = Math.floor(seconds / 60);
+                    if (interval > 1) {
+                        return interval + " minutes";
+                    }
+                    
+                    return Math.floor(seconds) + " seconds";
+                };
+
+                function getUserLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(recordPersonalLocation, showGeolocationError);
+
+                    } else {
+                        var error = "<strong>Gelocation is not supported by this browser.</strong>"
+                        $("#errorPanel").html(error).removeAttr("hidden").addClass("alert-danger").removeClass("alert-success");
+
+                    };
+                };
+
+                function recordPersonalLocation(position) {
+
+                    personalLoc = [position.coords.latitude, position.coords.longitude];
+                    showPosition(personalLoc);
+                
+                }
+                
+
+                function showPosition(personalLoc) {
+                    
+                    var loc = personalLoc;
+                    
+                    var description = "My Location";
+                    var des = description;
+                    var col = "black";
+
+                    var addPin = [loc[0], loc[1], description, des, col];
+                    pushPinInfo.push(addPin);
+                    $("#errorPanel").html("<strong>Your location added!</strong>").removeAttr("hidden").addClass("alert-success").removeClass("alert-danger");
+
+                    addPinLayer(pushPinInfo);
+                    updateTable();
+                    eventToMyLocation(personalLoc);
+
+                };
+
+                function showGeolocationError(error) {
+                    var x = $("#errorPanel").removeAttr("hidden").addClass("alert-danger").removeClass("alert-success");
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage = "User denied the request for Geolocation."
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage = "Location information is unavailable."
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage = "The request to get user location timed out."
+                            break;
+                        case error.UNKNOWN_ERROR:
+                            errorMessage = "An unknown error occurred."
+                            break;
+                    };
+                    x.html("<strong>" + errorMessage + "</strong>");
+                };
+
+                //click function for primary submit button
+                $("#submitPrimaryForm").click(function () {
+
+                    //check user has entered something
+                    if ($("#location").val().length > 0) {
+                        
+                        //send location query to bing maps REST api
+                        var query = $("#location").val();
+                        $.getJSON('http://dev.virtualearth.net/REST/v1/Locations?query=' + encodeURIComponent(query) + "&key=" + apiKey +"&jsonp=?", function (result) {
+                            if (result.resourceSets[0].estimatedTotal > 0) {
+                                
+                                //check user has entered description
+                                if ($("#description").val().length != 0) {
+                                    //get coordinates
+                                    var loc = result.resourceSets[0].resources[0].point.coordinates;
+                                    
+                                    //description of the venue
+                                    var description = $("#description").val();
+                                    var des;
+
+                                    //check if checkboxed is checked
+                                    if ($("#desCheck").prop("checked")) {
+                                        des = description;
+                                    } else {
+                                        des = "";
+                                    };
+                                    
+                                    //if pin color is checked in form
+                                    var col = $('input[name=pinColor]:checked', "#pinDetails").val();
+                                    
+                                    //form array of pin details and add to pushPinInfo array
+                                    var addPin = [loc[0], loc[1], description, des, col];
+                                    pushPinInfo.push(addPin);
+
+                                    //take new pin info and publish pin layer and table
+                                    addPinLayer(pushPinInfo);               
+                                    updateTable();
+
+                                    $("#errorPanel").removeAttr("hidden").addClass("alert-success").removeClass("alert-danger").html("<strong>Pin added.</strong>");
+                                    
+                                } else {
+
+                                    $("#errorPanel").removeAttr("hidden").addClass("alert-danger").removeClass("alert-success").html("<strong>Please enter a description.</strong>");
+                                }
+                            }
+                            else {
+
+                                $("#errorPanel").removeAttr("hidden").addClass("alert-danger").removeClass("alert-success").html("<strong>Sorry that address cannot be found.</strong>");
+                            }
+                        });
+                    }
+                    else {
+                        $("#errorPanel").removeAttr("hidden").addClass("alert-danger").removeClass("alert-success").html("<strong>Please enter an address</strong>");
+                    }
+                });
+
+                //click handler for modal submit button
+                $("#clickSubmit").on("click", function() {
+
+                    $("#clickErrorPanel").attr("hidden", "hidden");
+                    
+                    if ($("#clickPinDescription").val().length != 0) {
+                        $("#clickSubmit").attr("data-dismiss", "modal");
+                        clickPinDetailsFunction()
+                        $("#errorPanel").removeAttr("hidden").addClass("alert-success").removeClass("alert-danger").html("<strong>Pin added.</strong>");
+                    } else {
+
+                        if ($("#clickSubmit").attr("data-dismiss")) {
+                            $("#clickSubmit").removeAttr("data-dismiss");
+                        };
+                                    
+                        $("#clickErrorPanel").removeAttr("hidden").addClass("alert-danger").removeClass("alert-success").html("<strong>Please enter a description.</strong>");
+                    };
+
+                    removeClickModal();
+                
+                });
+
+                $("#closeButton").on("click", function() {
+
+                    removeClickModal();
+
+                });
+
+
+                //delegated click handler for delete pin button
+                $(document).delegate(".deletePin", "click", function(e) {
+
+                    //get button id
+                    var buttonId = e.target.id;
+                    var index = buttonId.split("delButton")[1];
+                    pushPinInfo.splice(index, 1);
+                    removePinFromMap(index + 1);
+                    updateTable();
+                    $("#errorPanel").addClass("alert-success").removeClass("alert-danger").html("<strong>Pin deleted.</strong>");
+
+                });
+                
+                function earthquakes() {
+
+                    callUSGS();
+                    // Loop through the results array and place a marker for each
+                    // set of coordinates.                   
+                    window.eqfeed_callback = function(results) {
+                        
+                        for (var i = 0; i < results.features.length; i++) {
+                            
+                            var loc = results.features[i].geometry.coordinates;
+                                                       
+                            //create description
+                            var mag = (results.features[i].properties.mag).toString();
+
+                            // add title
+                            var title = "M" + mag + " Earthquake";
+
+                            //add description
+                            var eventTime = results.features[i].properties.time;
+                            var timeString = (timeSince(eventTime)).toString();
+                            var earthquakePlace = (results.features[i].properties.place).toString();
+                            var url = results.features[i].properties.url;
+                            var des = "<a href='" + url + "' target='_blank'>A M" + mag + " earthquake occured " + timeString + " ago at " + earthquakePlace + ".</a>";
+                            var iconID = "img/earthquake.png"
+
+                            var earthquakeArray = [loc[1], loc[0], title, des, iconID];
+                            eventPin.push(earthquakeArray);
+                                        
+                        }                                                                      
+                    }
+                };
+
+                function hurricanes() {
+
+                    // Loop through the results array and place a marker for each
+                    // set of coordinates.                   
+                    $.ajax({
+                        url: "http://api.wunderground.com/api/9fdb05d1f6dbcf42/currenthurricane/view.json",
+                        dataType: "jsonp",
+                        success: function(results) {
+                            for (var i = 0; i < (results.currenthurricane).length; i++) {
+                            
+                                var loc = [(results.currenthurricane[i].Current.lat), (results.currenthurricane[i].Current.lon)];
+                               
+                                // add title
+                                var title = (results.currenthurricane[i].stormInfo.stormName_Nice).toString();
+
+                                //add time description
+                                var eventTime = results.currenthurricane[i].Current.Time.epoch;
+                                var timeString = (timeSince(eventTime)).toString();
+                                var eventTimePretty = (results.currenthurricane[i].Current.Time.pretty).toString();
+                                        
+                                //add wind description
+                                var windSpeedKMPH = (results.currenthurricane[i].Current.WindSpeed.Kph).toString() + " kmph";
+                                var windSpeedMPH = (results.currenthurricane[i].Current.WindSpeed.Mph).toString() + " mph";
+                                var windSpeedStr = " with a sustained wind speed of " + windSpeedKMPH + " (" + windGustMPH + ")";
+                                var windGustKMPH = (results.currenthurricane[i].Current.WindGust.Kph).toString() + " kmph";
+                                var windGustMPH = (results.currenthurricane[i].Current.WindGust.Mph).toString() + " mph";
+                                var windGustStr = " and a wind gust of " + windSpeedKMPH + " (" + windGustMPH + ").";
+                                        
+                                //add hurricane movement description
+                                var windMoveSpeedKMPH = (results.currenthurricane[i].Current.Fspeed.Kph).toString() + " kmph";
+                                var windMoveSpeedMPH = (results.currenthurricane[i].Current.Fspeed.Mph).toString() + " mph";
+                                var windMoveSpeedStr = " at a speed of " + windMoveSpeedKMPH + " (" + windMoveSpeedMPH + ").";
+                                var windMoveDirection = (results.currenthurricane[i].Current.Movement.Text).toString()
+                                var windMoveStr = " It is moving " + windMoveDirection + windMoveSpeedStr;
+
+                                //putting the des together
+                                var url = (results.currenthurricane[i].stormInfo.wuiurl).toString()
+                                var des = title + " is currently developing here" 
+                                    + windSpeedStr + windGustStr + windMoveStr + "<br /> Time reported: " + eventTimePretty 
+                                    + ".<br /><a href='" + url + "' target='_blank'>Click here for more information.</a>";
+                                var iconID = "img/hurricane.png"
+
+                                var hurricaneArray = [loc[0], loc[1], title, des, iconID];
+                                eventPin.push(hurricaneArray);
+                            }
+                            
+                        },
+                        error: function() {
+                            $("#errorPanel").addClass("alert-success").removeClass("alert-danger").html("<strong>Cannot retrieve hurricane data.</strong>");
+                        }
+                    });
+                    
+                };
+
+                function alertModal(title, description, distance) {
+
+                    var message;
+                    message = "<strong>" + title + ": </strong>" + description + " " + (distance).toFixed(1) + "km away.";
+                    $('#sigeventAlertModal').modal('show');
+                    $("#sigeventAlert").html(message);
+                    
+                };
+
+                function eventToMyLocation(personalLoc) {
+
+                    var title;
+                    var description;
+
+                    var lat1 = personalLoc[0];
+                    var lon1 = personalLoc[1];
+
+                    for (var i = 0; i < eventPin.length; i++) {
+
+                        var lat2 = eventPin[i][0];
+                        var lon2 = eventPin[i][1];
+
+                        if (getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) < 100) {
+
+                            var distance = getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2);
+                            title = eventPin[i][2];
+                            description = eventPin[i][3];
+                            alertModal(title, description, distance);
+                        };
+                    };
+
+                };
+
+                earthquakes();
+                hurricanes();
+
+            });
+             
+        </script>
+    </body>
+</html>
